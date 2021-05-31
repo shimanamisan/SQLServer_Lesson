@@ -43,22 +43,71 @@ namespace SQLServer_Lesson.SQLServer
         }
 
         // Readerの処理
-        public static void GetDataReader()
+        public static List<ProductEntity> GetDataReader()
         {
-            var sql = @"select * from Product";
+            // 改行が必要な場合は先頭に@マークをつける
+            var sql = @"select
+                        ProductId,
+                        ProductName,
+                        Price from
+                        Product";
 
+            var result = new List<ProductEntity>();
             using (var connection = new SqlConnection(_connectionString))
             using (var command = new SqlCommand(sql, connection))
             {
                 // データベースに接続してSELECT文の実行結果を1行ずつ返す
+                connection.Open();
                 using (var reader = command.ExecuteReader())
                 {
                     // 1行ずつ結果を返す、結果がなくなれば処理をfalseを返す
+                    // 取得したデータは維持されないので変数に格納しないと消えて無くなる
                     while(reader.Read())
                     {
+                        // reader[0] クエリの実行で取得したデータは項目を追加したときにバグが発生するので
+                        // インデックスではなく、カラムの名前で取得する
+                        // 値はObject型で返ってくるので、必ずデータベースの型と合わせてConvertする
+                        // SQLServerのintとC＃のintはどちらも32ビット
+                        // SQLServerでBigintだったらC＃ではlongでConvertする
+                        // 整数はビット数に気を付ける
 
+                        result.Add(new ProductEntity(
+                                    Convert.ToInt32(reader["ProductId"]),
+                                    Convert.ToString(reader["ProductName"]),
+                                    Convert.ToInt32(reader["Price"])                                      
+                                    ));
                     }
+
+                    // SQLServer real →     C# float ToSingle()
+                    // SQLServer float →    C# double ToDouble()
+                    // SQLServer bigint →   C# long ToInt64()
+                    // SQLServer int →      C# long ToInt32()
+                    // SQLServer smallint → C# long ToInt16()
+                    // SQLServer tinyint →  C# long ToByte()
+                    // SQLServer varchar →  C# string ToString()
+
                 }
+            }
+
+            return result;
+        }
+
+        public static void Insert(ProductEntity products)
+        {
+            string sql = @"insert into Product(ProductId,ProductName,Price) values(@ProductId,@ProductName,@Price)";
+
+            using (var connection = new SqlConnection(_connectionString))
+            using (var command = new SqlCommand(sql, connection))
+            {
+                connection.Open();
+
+                // SQLの値を指定する
+                command.Parameters.AddWithValue("@ProductId", products.ProductId);
+                command.Parameters.AddWithValue("@ProductName", products.ProductName);
+                command.Parameters.AddWithValue("@Price", products.Price);
+
+                // Insertする場合はExecuteNonQueryでSQLコマンドのSQLが実行される
+                command.ExecuteNonQuery();
             }
         }
     }

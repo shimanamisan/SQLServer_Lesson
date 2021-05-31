@@ -57,7 +57,17 @@ namespace SQLServer_Lesson
 
         private void ReaderRead(object sender, EventArgs e)
         {
+            dataGridView1.DataSource = ProductSQLServer.GetDataReader();
+        }
 
+        private void InsertCommandButton_Click(object sender, EventArgs e)
+        {
+            int productId = Convert.ToInt32(ProductIdTextBox.Text);
+            string productName = Convert.ToString(ProductNameTextBox.Text);
+            int price = Convert.ToInt32(PriceTextBox.Text);
+
+            var entity = new ProductEntity(productId, productName, price);
+            ProductSQLServer.Insert(entity);
         }
     }
 }
