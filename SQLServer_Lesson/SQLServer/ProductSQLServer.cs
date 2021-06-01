@@ -110,5 +110,52 @@ namespace SQLServer_Lesson.SQLServer
                 command.ExecuteNonQuery();
             }
         }
+
+        public static void Update(ProductEntity products)
+        {
+
+            string sql = @"update Product set ProductName=@ProductName, Price=@Price where ProductId=@ProductId";
+
+            using (var connection = new SqlConnection(_connectionString))
+            using (var command = new SqlCommand(sql, connection))
+            {
+                connection.Open();
+
+                // SQLの値を指定する
+                command.Parameters.AddWithValue("@ProductId", products.ProductId);
+                command.Parameters.AddWithValue("@ProductName", products.ProductName);
+                command.Parameters.AddWithValue("@Price", products.Price);
+
+                // Insertする場合はExecuteNonQueryでSQLコマンドのSQLが実行される
+                var updateCount = command.ExecuteNonQuery();
+
+                // ExecuteNonQueryの実行結果でUpdateされたレコードの件数が返ってくる
+                // それが0件だったらInsertする処理を追加
+                if (updateCount < 1)
+                {
+                    Insert(products);
+                }
+            }
+        }
+
+        public static void Delete(int producId)
+        {
+
+            string sql = @"delete Product where ProductId=@ProductId";
+
+            using (var connection = new SqlConnection(_connectionString))
+            using (var command = new SqlCommand(sql, connection))
+            {
+                connection.Open();
+
+                // SQLの値を指定する
+                command.Parameters.AddWithValue("@ProductId", producId);
+            
+                // Insertする場合はExecuteNonQueryでSQLコマンドのSQLが実行される
+                command.ExecuteNonQuery();
+                // 何件削除したかメッセージなどで表示させたければcount変数を作って戻り値を受けてもよい
+            
+            }
+        }
     }
 }

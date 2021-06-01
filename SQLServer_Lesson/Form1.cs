@@ -69,5 +69,22 @@ namespace SQLServer_Lesson
             var entity = new ProductEntity(productId, productName, price);
             ProductSQLServer.Insert(entity);
         }
+
+        private void UpdateCommandButton_Click(object sender, EventArgs e)
+        {
+            int productId = Convert.ToInt32(ProductIdTextBox.Text);
+            string productName = Convert.ToString(ProductNameTextBox.Text);
+            int price = Convert.ToInt32(PriceTextBox.Text);
+
+            var entity = new ProductEntity(productId, productName, price);
+            ProductSQLServer.Update(entity);
+        }
+
+        private void DeleteCommandButton_Click(object sender, EventArgs e)
+        {
+            int productId = Convert.ToInt32(ProductIdTextBox.Text);
+
+            ProductSQLServer.Delete(productId);
+        }
     }
 }

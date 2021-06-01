@@ -36,6 +36,8 @@ namespace SQLServer_Lesson
             this.ProductIdTextBox = new System.Windows.Forms.TextBox();
             this.ProductNameTextBox = new System.Windows.Forms.TextBox();
             this.PriceTextBox = new System.Windows.Forms.TextBox();
+            this.UpdateCommandButton = new System.Windows.Forms.Button();
+            this.DeleteCommandButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -99,11 +101,33 @@ namespace SQLServer_Lesson
             this.PriceTextBox.Size = new System.Drawing.Size(120, 19);
             this.PriceTextBox.TabIndex = 6;
             // 
+            // UpdateCommandButton
+            // 
+            this.UpdateCommandButton.Location = new System.Drawing.Point(12, 135);
+            this.UpdateCommandButton.Name = "UpdateCommandButton";
+            this.UpdateCommandButton.Size = new System.Drawing.Size(200, 30);
+            this.UpdateCommandButton.TabIndex = 7;
+            this.UpdateCommandButton.Text = "Update Command";
+            this.UpdateCommandButton.UseVisualStyleBackColor = true;
+            this.UpdateCommandButton.Click += new System.EventHandler(this.UpdateCommandButton_Click);
+            // 
+            // DeleteCommandButton
+            // 
+            this.DeleteCommandButton.Location = new System.Drawing.Point(12, 171);
+            this.DeleteCommandButton.Name = "DeleteCommandButton";
+            this.DeleteCommandButton.Size = new System.Drawing.Size(200, 30);
+            this.DeleteCommandButton.TabIndex = 8;
+            this.DeleteCommandButton.Text = "Delete Command";
+            this.DeleteCommandButton.UseVisualStyleBackColor = true;
+            this.DeleteCommandButton.Click += new System.EventHandler(this.DeleteCommandButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(640, 461);
+            this.Controls.Add(this.DeleteCommandButton);
+            this.Controls.Add(this.UpdateCommandButton);
             this.Controls.Add(this.PriceTextBox);
             this.Controls.Add(this.ProductNameTextBox);
             this.Controls.Add(this.ProductIdTextBox);
@@ -128,6 +152,8 @@ namespace SQLServer_Lesson
         private System.Windows.Forms.TextBox ProductIdTextBox;
         private System.Windows.Forms.TextBox ProductNameTextBox;
         private System.Windows.Forms.TextBox PriceTextBox;
+        private System.Windows.Forms.Button UpdateCommandButton;
+        private System.Windows.Forms.Button DeleteCommandButton;
     }
 }
 
