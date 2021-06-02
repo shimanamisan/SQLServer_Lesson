@@ -38,6 +38,11 @@ namespace SQLServer_Lesson
             this.PriceTextBox = new System.Windows.Forms.TextBox();
             this.UpdateCommandButton = new System.Windows.Forms.Button();
             this.DeleteCommandButton = new System.Windows.Forms.Button();
+            this.DapperReadButton = new System.Windows.Forms.Button();
+            this.DapperInsertButton = new System.Windows.Forms.Button();
+            this.EFReadtButton = new System.Windows.Forms.Button();
+            this.EFInsertButton = new System.Windows.Forms.Button();
+            this.EFUpdateButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -121,11 +126,66 @@ namespace SQLServer_Lesson
             this.DeleteCommandButton.UseVisualStyleBackColor = true;
             this.DeleteCommandButton.Click += new System.EventHandler(this.DeleteCommandButton_Click);
             // 
+            // DapperReadButton
+            // 
+            this.DapperReadButton.Location = new System.Drawing.Point(12, 207);
+            this.DapperReadButton.Name = "DapperReadButton";
+            this.DapperReadButton.Size = new System.Drawing.Size(200, 30);
+            this.DapperReadButton.TabIndex = 9;
+            this.DapperReadButton.Text = "Dapper read";
+            this.DapperReadButton.UseVisualStyleBackColor = true;
+            this.DapperReadButton.Click += new System.EventHandler(this.DapperReadButton_Click);
+            // 
+            // DapperInsertButton
+            // 
+            this.DapperInsertButton.Location = new System.Drawing.Point(12, 243);
+            this.DapperInsertButton.Name = "DapperInsertButton";
+            this.DapperInsertButton.Size = new System.Drawing.Size(200, 30);
+            this.DapperInsertButton.TabIndex = 10;
+            this.DapperInsertButton.Text = "Dapper Insert";
+            this.DapperInsertButton.UseVisualStyleBackColor = true;
+            this.DapperInsertButton.Click += new System.EventHandler(this.DapperInsertButton_Click);
+            // 
+            // EFReadtButton
+            // 
+            this.EFReadtButton.Location = new System.Drawing.Point(12, 279);
+            this.EFReadtButton.Name = "EFReadtButton";
+            this.EFReadtButton.Size = new System.Drawing.Size(200, 30);
+            this.EFReadtButton.TabIndex = 11;
+            this.EFReadtButton.Text = "EF Read";
+            this.EFReadtButton.UseVisualStyleBackColor = true;
+            this.EFReadtButton.Click += new System.EventHandler(this.EFReadtButton_Click);
+            // 
+            // EFInsertButton
+            // 
+            this.EFInsertButton.Location = new System.Drawing.Point(12, 315);
+            this.EFInsertButton.Name = "EFInsertButton";
+            this.EFInsertButton.Size = new System.Drawing.Size(200, 30);
+            this.EFInsertButton.TabIndex = 12;
+            this.EFInsertButton.Text = "EF Insert";
+            this.EFInsertButton.UseVisualStyleBackColor = true;
+            this.EFInsertButton.Click += new System.EventHandler(this.EFInsertButton_Click);
+            // 
+            // EFUpdateButton
+            // 
+            this.EFUpdateButton.Location = new System.Drawing.Point(12, 351);
+            this.EFUpdateButton.Name = "EFUpdateButton";
+            this.EFUpdateButton.Size = new System.Drawing.Size(200, 30);
+            this.EFUpdateButton.TabIndex = 13;
+            this.EFUpdateButton.Text = "EF Update";
+            this.EFUpdateButton.UseVisualStyleBackColor = true;
+            this.EFUpdateButton.Click += new System.EventHandler(this.EFUpdateButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(640, 461);
+            this.Controls.Add(this.EFUpdateButton);
+            this.Controls.Add(this.EFInsertButton);
+            this.Controls.Add(this.EFReadtButton);
+            this.Controls.Add(this.DapperInsertButton);
+            this.Controls.Add(this.DapperReadButton);
             this.Controls.Add(this.DeleteCommandButton);
             this.Controls.Add(this.UpdateCommandButton);
             this.Controls.Add(this.PriceTextBox);
@@ -154,6 +214,11 @@ namespace SQLServer_Lesson
         private System.Windows.Forms.TextBox PriceTextBox;
         private System.Windows.Forms.Button UpdateCommandButton;
         private System.Windows.Forms.Button DeleteCommandButton;
+        private System.Windows.Forms.Button DapperReadButton;
+        private System.Windows.Forms.Button DapperInsertButton;
+        private System.Windows.Forms.Button EFReadtButton;
+        private System.Windows.Forms.Button EFInsertButton;
+        private System.Windows.Forms.Button EFUpdateButton;
     }
 }
 

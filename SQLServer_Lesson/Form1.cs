@@ -1,4 +1,5 @@
-﻿using SQLServer_Lesson.SQLServer;
+﻿using SQLServer_Lesson.Models;
+using SQLServer_Lesson.SQLServer;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -85,6 +86,66 @@ namespace SQLServer_Lesson
             int productId = Convert.ToInt32(ProductIdTextBox.Text);
 
             ProductSQLServer.Delete(productId);
+        }
+
+        private void DapperReadButton_Click(object sender, EventArgs e)
+        {
+            dataGridView1.DataSource = ProductSQLServer.GetDapper();
+        }
+
+        private void DapperInsertButton_Click(object sender, EventArgs e)
+        {
+            int productId = Convert.ToInt32(ProductIdTextBox.Text);
+            string productName = Convert.ToString(ProductNameTextBox.Text);
+            int price = Convert.ToInt32(PriceTextBox.Text);
+
+            var entity = new ProductEntity(productId, productName, price);
+            ProductSQLServer.DapperInsert(entity);
+        }
+
+        private void EFReadtButton_Click(object sender, EventArgs e)
+        {
+            // EntityFrameworkで自動的に生成されたリストを使用する
+            var source = new List<Product>();
+
+            // 接続はApp.Configにつながる
+            // connectionString="接続先"となっているので接続先を変更したければここを変更する
+            using (var db = new Model1())
+            {
+                source.AddRange(db.Products);
+            }
+
+            dataGridView1.DataSource = source;
+        }
+
+        private void EFInsertButton_Click(object sender, EventArgs e)
+        {
+            // EntityFrameworkで自動生成されたクラスに格納する
+            Product p = new Product();
+
+            p.ProductId = Convert.ToInt32(ProductIdTextBox.Text);
+            p.ProductName = Convert.ToString(ProductNameTextBox.Text);
+            p.Price = Convert.ToInt32(PriceTextBox.Text);
+
+            using (var db = new Model1())
+            {
+                db.Products.Add(p);
+                // データベースに保存するときは必ず実行する
+                db.SaveChanges();
+            }
+        }
+
+        private void EFUpdateButton_Click(object sender, EventArgs e)
+        {
+            using (var db = new Model1())
+            {
+                // IDをキーにしてデータを取得する
+                var p = db.Products.Find(Convert.ToInt32(ProductIdTextBox.Text));
+
+                p.ProductName = ProductNameTextBox.Text;
+                p.Price = Convert.ToInt32(PriceTextBox.Text);
+                db.SaveChanges();
+            }
         }
     }
 }

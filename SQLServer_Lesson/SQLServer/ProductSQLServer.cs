@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dapper;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -62,7 +63,7 @@ namespace SQLServer_Lesson.SQLServer
                 {
                     // 1行ずつ結果を返す、結果がなくなれば処理をfalseを返す
                     // 取得したデータは維持されないので変数に格納しないと消えて無くなる
-                    while(reader.Read())
+                    while (reader.Read())
                     {
                         // reader[0] クエリの実行で取得したデータは項目を追加したときにバグが発生するので
                         // インデックスではなく、カラムの名前で取得する
@@ -74,7 +75,7 @@ namespace SQLServer_Lesson.SQLServer
                         result.Add(new ProductEntity(
                                     Convert.ToInt32(reader["ProductId"]),
                                     Convert.ToString(reader["ProductName"]),
-                                    Convert.ToInt32(reader["Price"])                                      
+                                    Convert.ToInt32(reader["Price"])
                                     ));
                     }
 
@@ -150,12 +151,54 @@ namespace SQLServer_Lesson.SQLServer
 
                 // SQLの値を指定する
                 command.Parameters.AddWithValue("@ProductId", producId);
-            
+
                 // Insertする場合はExecuteNonQueryでSQLコマンドのSQLが実行される
                 command.ExecuteNonQuery();
                 // 何件削除したかメッセージなどで表示させたければcount変数を作って戻り値を受けてもよい
-            
+
             }
         }
+
+        public static List<ProductEntity> GetDapper()
+        {
+            // 改行が必要な場合は先頭に@マークをつける
+            var sql = @"select
+                        ProductId,
+                        ProductName,
+                        Price from
+                        Product";
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                // SQLを実行してProductEntityの型にマッピングして値を返してくれる
+                // Queryメソッドに合わせてF12キーを押すとDapperクラスに飛べる
+                return connection.Query<ProductEntity>(sql).ToList();
+            }
+
+        }
+ 
+        public static void DapperInsert(ProductEntity products)
+        {
+            string sql = @"insert into Product(ProductId,ProductName,Price) values(@ProductId,@ProductName,@Price)";
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Execute(sql, new { products.ProductId, products.ProductName, products.Price });
+            }
+        }
+
+        // DapperUpdate
+        public static void DapperUpdate(ProductEntity products)
+        {
+
+        }
+
+        // DapperDelete
+        public static void DapperDelete(ProductEntity products)
+        {
+
+        }
+
+        // 
     }
 }
