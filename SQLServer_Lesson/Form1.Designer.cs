@@ -43,6 +43,9 @@ namespace SQLServer_Lesson
             this.EFReadtButton = new System.Windows.Forms.Button();
             this.EFInsertButton = new System.Windows.Forms.Button();
             this.EFUpdateButton = new System.Windows.Forms.Button();
+            this.EFDeleteButton = new System.Windows.Forms.Button();
+            this.DapperUpdateButton = new System.Windows.Forms.Button();
+            this.DapperDeleteButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -148,7 +151,7 @@ namespace SQLServer_Lesson
             // 
             // EFReadtButton
             // 
-            this.EFReadtButton.Location = new System.Drawing.Point(12, 279);
+            this.EFReadtButton.Location = new System.Drawing.Point(215, 359);
             this.EFReadtButton.Name = "EFReadtButton";
             this.EFReadtButton.Size = new System.Drawing.Size(200, 30);
             this.EFReadtButton.TabIndex = 11;
@@ -158,7 +161,7 @@ namespace SQLServer_Lesson
             // 
             // EFInsertButton
             // 
-            this.EFInsertButton.Location = new System.Drawing.Point(12, 315);
+            this.EFInsertButton.Location = new System.Drawing.Point(421, 359);
             this.EFInsertButton.Name = "EFInsertButton";
             this.EFInsertButton.Size = new System.Drawing.Size(200, 30);
             this.EFInsertButton.TabIndex = 12;
@@ -168,7 +171,7 @@ namespace SQLServer_Lesson
             // 
             // EFUpdateButton
             // 
-            this.EFUpdateButton.Location = new System.Drawing.Point(12, 351);
+            this.EFUpdateButton.Location = new System.Drawing.Point(215, 395);
             this.EFUpdateButton.Name = "EFUpdateButton";
             this.EFUpdateButton.Size = new System.Drawing.Size(200, 30);
             this.EFUpdateButton.TabIndex = 13;
@@ -176,11 +179,44 @@ namespace SQLServer_Lesson
             this.EFUpdateButton.UseVisualStyleBackColor = true;
             this.EFUpdateButton.Click += new System.EventHandler(this.EFUpdateButton_Click);
             // 
+            // EFDeleteButton
+            // 
+            this.EFDeleteButton.Location = new System.Drawing.Point(421, 395);
+            this.EFDeleteButton.Name = "EFDeleteButton";
+            this.EFDeleteButton.Size = new System.Drawing.Size(200, 30);
+            this.EFDeleteButton.TabIndex = 14;
+            this.EFDeleteButton.Text = "EF Delete";
+            this.EFDeleteButton.UseVisualStyleBackColor = true;
+            this.EFDeleteButton.Click += new System.EventHandler(this.EFDeleteButton_Click);
+            // 
+            // DapperUpdateButton
+            // 
+            this.DapperUpdateButton.Location = new System.Drawing.Point(12, 279);
+            this.DapperUpdateButton.Name = "DapperUpdateButton";
+            this.DapperUpdateButton.Size = new System.Drawing.Size(200, 30);
+            this.DapperUpdateButton.TabIndex = 15;
+            this.DapperUpdateButton.Text = "Dappert Update";
+            this.DapperUpdateButton.UseVisualStyleBackColor = true;
+            this.DapperUpdateButton.Click += new System.EventHandler(this.DapperUpdateButton_Click);
+            // 
+            // DapperDeleteButton
+            // 
+            this.DapperDeleteButton.Location = new System.Drawing.Point(12, 315);
+            this.DapperDeleteButton.Name = "DapperDeleteButton";
+            this.DapperDeleteButton.Size = new System.Drawing.Size(200, 30);
+            this.DapperDeleteButton.TabIndex = 16;
+            this.DapperDeleteButton.Text = "Dapper Delete";
+            this.DapperDeleteButton.UseVisualStyleBackColor = true;
+            this.DapperDeleteButton.Click += new System.EventHandler(this.DapperDeleteButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(640, 461);
+            this.Controls.Add(this.DapperDeleteButton);
+            this.Controls.Add(this.DapperUpdateButton);
+            this.Controls.Add(this.EFDeleteButton);
             this.Controls.Add(this.EFUpdateButton);
             this.Controls.Add(this.EFInsertButton);
             this.Controls.Add(this.EFReadtButton);
@@ -219,6 +255,9 @@ namespace SQLServer_Lesson
         private System.Windows.Forms.Button EFReadtButton;
         private System.Windows.Forms.Button EFInsertButton;
         private System.Windows.Forms.Button EFUpdateButton;
+        private System.Windows.Forms.Button EFDeleteButton;
+        private System.Windows.Forms.Button DapperUpdateButton;
+        private System.Windows.Forms.Button DapperDeleteButton;
     }
 }
 

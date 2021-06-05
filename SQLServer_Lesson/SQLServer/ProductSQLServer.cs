@@ -12,35 +12,41 @@ namespace SQLServer_Lesson.SQLServer
     public static class ProductSQLServer
     {
 
-        private static string _connectionString;
+        //private static string _connectionString;
 
         // このクラスにアクセスしようとしたときに最初に動作するコンストラクタを作成
         static ProductSQLServer()
         {
-            var builder = new SqlConnectionStringBuilder();
-            builder.DataSource = @"HOME-SERVER-01\SQLEXPRESS"; // バックスラッシュがある場合は文字列の先頭に@をつける
-            builder.InitialCatalog = "My_DB"; // DB名
-            builder.IntegratedSecurity = true; // Windows認証の場合
-            _connectionString = builder.ToString();
+            // リファクタリングによりProductSQLServerクラスへ移動
+
+            //var builder = new SqlConnectionStringBuilder();
+            //builder.DataSource = @"HOME-SERVER-01\SQLEXPRESS"; // バックスラッシュがある場合は文字列の先頭に@をつける
+            //builder.InitialCatalog = "My_DB"; // DB名
+            //builder.IntegratedSecurity = true; // Windows認証の場合
+            //_connectionString = builder.ToString();
         }
 
         public static DataTable GetDataTable()
         {
             var sql = @"select * from Product";
 
-            DataTable dt = new DataTable();
+            return SqlServerHelper.GetDataTable(sql);
 
-            // Disposeが呼び出せる処理はusingを使用してエラー時には接続が閉じるようにする
-            // 処理の閉じ忘れを防止して、メモリーの消費を防ぐため
-            using (var connection = new SqlConnection(_connectionString))
-            using (var adapter = new SqlDataAdapter(sql, connection)) // SQLと接続情報を渡す
-            {
-                connection.Open();
-                // SQLが発行されてDataTableに結果が入る
-                adapter.Fill(dt);
-            }
+            // リファクタリングによりProductSQLServerクラスへ移動
 
-            return dt;
+            //DataTable dt = new DataTable();
+
+            //// Disposeが呼び出せる処理はusingを使用してエラー時には接続が閉じるようにする
+            //// 処理の閉じ忘れを防止して、メモリーの消費を防ぐため
+            //using (var connection = new SqlConnection(_connectionString))
+            //using (var adapter = new SqlDataAdapter(sql, connection)) // SQLと接続情報を渡す
+            //{
+            //    connection.Open();
+            //    // SQLが発行されてDataTableに結果が入る
+            //    adapter.Fill(dt);
+            //}
+
+            //return dt;
         }
 
         // Readerの処理
@@ -54,41 +60,56 @@ namespace SQLServer_Lesson.SQLServer
                         Product";
 
             var result = new List<ProductEntity>();
-            using (var connection = new SqlConnection(_connectionString))
-            using (var command = new SqlCommand(sql, connection))
+
+            SqlServerHelper.Query(sql, reader =>
             {
-                // データベースに接続してSELECT文の実行結果を1行ずつ返す
-                connection.Open();
-                using (var reader = command.ExecuteReader())
-                {
-                    // 1行ずつ結果を返す、結果がなくなれば処理をfalseを返す
-                    // 取得したデータは維持されないので変数に格納しないと消えて無くなる
-                    while (reader.Read())
-                    {
-                        // reader[0] クエリの実行で取得したデータは項目を追加したときにバグが発生するので
-                        // インデックスではなく、カラムの名前で取得する
-                        // 値はObject型で返ってくるので、必ずデータベースの型と合わせてConvertする
-                        // SQLServerのintとC＃のintはどちらも32ビット
-                        // SQLServerでBigintだったらC＃ではlongでConvertする
-                        // 整数はビット数に気を付ける
+                // SqlServerHelperの方でループ処理が実行されているときに
+                // ここの処理が呼ばれて1行ずつリストに追加される
+                result.Add(new ProductEntity(
+                        Convert.ToInt32(reader["ProductId"]),
+                        Convert.ToString(reader["ProductName"]),
+                        Convert.ToInt32(reader["Price"])
+                        ));
 
-                        result.Add(new ProductEntity(
-                                    Convert.ToInt32(reader["ProductId"]),
-                                    Convert.ToString(reader["ProductName"]),
-                                    Convert.ToInt32(reader["Price"])
-                                    ));
-                    }
+            });
 
-                    // SQLServer real →     C# float ToSingle()
-                    // SQLServer float →    C# double ToDouble()
-                    // SQLServer bigint →   C# long ToInt64()
-                    // SQLServer int →      C# long ToInt32()
-                    // SQLServer smallint → C# long ToInt16()
-                    // SQLServer tinyint →  C# long ToByte()
-                    // SQLServer varchar →  C# string ToString()
+            // リファクタリングによりProductSQLServerクラスへ移動
 
-                }
-            }
+            //using (var connection = new SqlConnection(_connectionString))
+            //using (var command = new SqlCommand(sql, connection))
+            //{
+            //    // データベースに接続してSELECT文の実行結果を1行ずつ返す
+            //    connection.Open();
+            //    using (var reader = command.ExecuteReader())
+            //    {
+            //        // 1行ずつ結果を返す、結果がなくなれば処理をfalseを返す
+            //        // 取得したデータは維持されないので変数に格納しないと消えて無くなる
+            //        while (reader.Read())
+            //        {
+            //            // reader[0] クエリの実行で取得したデータは項目を追加したときにバグが発生するので
+            //            // インデックスではなく、カラムの名前で取得する
+            //            // 値はObject型で返ってくるので、必ずデータベースの型と合わせてConvertする
+            //            // SQLServerのintとC＃のintはどちらも32ビット
+            //            // SQLServerでBigintだったらC＃ではlongでConvertする
+            //            // 整数はビット数に気を付ける
+
+            //            result.Add(new ProductEntity(
+            //                        Convert.ToInt32(reader["ProductId"]),
+            //                        Convert.ToString(reader["ProductName"]),
+            //                        Convert.ToInt32(reader["Price"])
+            //                        ));
+            //        }
+
+            //        // SQLServer real →     C# float ToSingle()
+            //        // SQLServer float →    C# double ToDouble()
+            //        // SQLServer bigint →   C# long ToInt64()
+            //        // SQLServer int →      C# long ToInt32()
+            //        // SQLServer smallint → C# long ToInt16()
+            //        // SQLServer tinyint →  C# long ToByte()
+            //        // SQLServer varchar →  C# string ToString()
+
+            //    }
+            //}
 
             return result;
         }
@@ -97,19 +118,13 @@ namespace SQLServer_Lesson.SQLServer
         {
             string sql = @"insert into Product(ProductId,ProductName,Price) values(@ProductId,@ProductName,@Price)";
 
-            using (var connection = new SqlConnection(_connectionString))
-            using (var command = new SqlCommand(sql, connection))
-            {
-                connection.Open();
+            var p = new List<SqlParameter>();
 
-                // SQLの値を指定する
-                command.Parameters.AddWithValue("@ProductId", products.ProductId);
-                command.Parameters.AddWithValue("@ProductName", products.ProductName);
-                command.Parameters.AddWithValue("@Price", products.Price);
-
-                // Insertする場合はExecuteNonQueryでSQLコマンドのSQLが実行される
-                command.ExecuteNonQuery();
-            }
+            p.Add(new SqlParameter("@ProductId", products.ProductId));
+            p.Add(new SqlParameter("@ProductName", products.ProductName));
+            p.Add(new SqlParameter("@Price", products.Price));
+            SqlServerHelper.Execute(sql, p);
+            
         }
 
         public static void Update(ProductEntity products)
@@ -117,26 +132,17 @@ namespace SQLServer_Lesson.SQLServer
 
             string sql = @"update Product set ProductName=@ProductName, Price=@Price where ProductId=@ProductId";
 
-            using (var connection = new SqlConnection(_connectionString))
-            using (var command = new SqlCommand(sql, connection))
+            var p = new List<SqlParameter>();
+            p.Add(new SqlParameter("@ProductId", products.ProductId));
+            p.Add(new SqlParameter("@ProductName", products.ProductName));
+            p.Add(new SqlParameter("@Price", products.Price));
+            var update_count = SqlServerHelper.Execute(sql, p);
+            
+            if (update_count < 1)
             {
-                connection.Open();
-
-                // SQLの値を指定する
-                command.Parameters.AddWithValue("@ProductId", products.ProductId);
-                command.Parameters.AddWithValue("@ProductName", products.ProductName);
-                command.Parameters.AddWithValue("@Price", products.Price);
-
-                // Insertする場合はExecuteNonQueryでSQLコマンドのSQLが実行される
-                var updateCount = command.ExecuteNonQuery();
-
-                // ExecuteNonQueryの実行結果でUpdateされたレコードの件数が返ってくる
-                // それが0件だったらInsertする処理を追加
-                if (updateCount < 1)
-                {
-                    Insert(products);
-                }
+                Insert(products);
             }
+
         }
 
         public static void Delete(int producId)
@@ -144,21 +150,12 @@ namespace SQLServer_Lesson.SQLServer
 
             string sql = @"delete Product where ProductId=@ProductId";
 
-            using (var connection = new SqlConnection(_connectionString))
-            using (var command = new SqlCommand(sql, connection))
-            {
-                connection.Open();
-
-                // SQLの値を指定する
-                command.Parameters.AddWithValue("@ProductId", producId);
-
-                // Insertする場合はExecuteNonQueryでSQLコマンドのSQLが実行される
-                command.ExecuteNonQuery();
-                // 何件削除したかメッセージなどで表示させたければcount変数を作って戻り値を受けてもよい
-
-            }
+            var p = new List<SqlParameter>();
+            p.Add(new SqlParameter("@ProductId", producId));
+            SqlServerHelper.Execute(sql, p);
         }
 
+        // GetDapper
         public static List<ProductEntity> GetDapper()
         {
             // 改行が必要な場合は先頭に@マークをつける
@@ -168,7 +165,7 @@ namespace SQLServer_Lesson.SQLServer
                         Price from
                         Product";
 
-            using (var connection = new SqlConnection(_connectionString))
+            using (var connection = new SqlConnection(SqlServerHelper.ConnectionString))
             {
                 // SQLを実行してProductEntityの型にマッピングして値を返してくれる
                 // Queryメソッドに合わせてF12キーを押すとDapperクラスに飛べる
@@ -176,12 +173,13 @@ namespace SQLServer_Lesson.SQLServer
             }
 
         }
- 
+
+        // DapperInsert
         public static void DapperInsert(ProductEntity products)
         {
             string sql = @"insert into Product(ProductId,ProductName,Price) values(@ProductId,@ProductName,@Price)";
 
-            using (var connection = new SqlConnection(_connectionString))
+            using (var connection = new SqlConnection(SqlServerHelper.ConnectionString))
             {
                 connection.Execute(sql, new { products.ProductId, products.ProductName, products.Price });
             }
@@ -190,15 +188,24 @@ namespace SQLServer_Lesson.SQLServer
         // DapperUpdate
         public static void DapperUpdate(ProductEntity products)
         {
+            string sql = @"update Product set ProductName=@ProductName, Price=@Price where ProductId=@ProductId";
 
+            using (var connection = new SqlConnection(SqlServerHelper.ConnectionString))
+            {
+                connection.Execute(sql, new { products.ProductId, products.ProductName, products.Price } );
+            }
         }
 
         // DapperDelete
-        public static void DapperDelete(ProductEntity products)
+        public static void DapperDelete(int productId)
         {
+            string sql = @"delete Product where ProductId=@ProductId";
 
+            using (var connection = new SqlConnection(SqlServerHelper.ConnectionString))
+            {
+                connection.Execute(sql, new { productId });
+            }
         }
 
-        // 
     }
 }

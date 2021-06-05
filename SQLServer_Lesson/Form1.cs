@@ -103,6 +103,24 @@ namespace SQLServer_Lesson
             ProductSQLServer.DapperInsert(entity);
         }
 
+        private void DapperUpdateButton_Click(object sender, EventArgs e)
+        {
+            int productId = Convert.ToInt32(ProductIdTextBox.Text);
+            string productName = Convert.ToString(ProductNameTextBox.Text);
+            int price = Convert.ToInt32(PriceTextBox.Text);
+
+            var entity = new ProductEntity(productId, productName, price);
+            ProductSQLServer.DapperUpdate(entity);
+
+        }
+
+        private void DapperDeleteButton_Click(object sender, EventArgs e)
+        {
+            int productId = Convert.ToInt32(ProductIdTextBox.Text);
+
+            ProductSQLServer.DapperDelete(productId);
+        }
+
         private void EFReadtButton_Click(object sender, EventArgs e)
         {
             // EntityFrameworkで自動的に生成されたリストを使用する
@@ -147,5 +165,18 @@ namespace SQLServer_Lesson
                 db.SaveChanges();
             }
         }
+
+        private void EFDeleteButton_Click(object sender, EventArgs e)
+        {
+            using (var db = new Model1())
+            {
+                // Updateと同様、IDからレコードを取得する処理を記述する
+                var p = db.Products.Find(Convert.ToInt32(ProductIdTextBox.Text));
+                db.Products.Remove(p);
+                db.SaveChanges();
+            }
+        }
+
+
     }
 }
