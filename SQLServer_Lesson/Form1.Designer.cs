@@ -46,6 +46,7 @@ namespace SQLServer_Lesson
             this.EFDeleteButton = new System.Windows.Forms.Button();
             this.DapperUpdateButton = new System.Windows.Forms.Button();
             this.DapperDeleteButton = new System.Windows.Forms.Button();
+            this.InsertDataButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -209,11 +210,22 @@ namespace SQLServer_Lesson
             this.DapperDeleteButton.UseVisualStyleBackColor = true;
             this.DapperDeleteButton.Click += new System.EventHandler(this.DapperDeleteButton_Click);
             // 
+            // InsertDataButton
+            // 
+            this.InsertDataButton.Location = new System.Drawing.Point(12, 351);
+            this.InsertDataButton.Name = "InsertDataButton";
+            this.InsertDataButton.Size = new System.Drawing.Size(200, 50);
+            this.InsertDataButton.TabIndex = 17;
+            this.InsertDataButton.Text = "Insert 5万件";
+            this.InsertDataButton.UseVisualStyleBackColor = true;
+            this.InsertDataButton.Click += new System.EventHandler(this.InsertDataButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(640, 461);
+            this.Controls.Add(this.InsertDataButton);
             this.Controls.Add(this.DapperDeleteButton);
             this.Controls.Add(this.DapperUpdateButton);
             this.Controls.Add(this.EFDeleteButton);
@@ -258,6 +270,7 @@ namespace SQLServer_Lesson
         private System.Windows.Forms.Button EFDeleteButton;
         private System.Windows.Forms.Button DapperUpdateButton;
         private System.Windows.Forms.Button DapperDeleteButton;
+        private System.Windows.Forms.Button InsertDataButton;
     }
 }
 

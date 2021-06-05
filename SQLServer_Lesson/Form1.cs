@@ -51,9 +51,14 @@ namespace SQLServer_Lesson
             //    adapter.Fill(dt);
             //}
 
+            // ストップウォッチ機能を使って処理の速度を計測する
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
             // 実行結果を画面に表示させる
             dataGridView1.DataSource = ProductSQLServer.GetDataTable();
-
+            sw.Stop();
+            // 何ミリ秒かかったか文字列に戻して出力する
+            this.Text = sw.ElapsedMilliseconds.ToString();
         }
 
         private void ReaderRead(object sender, EventArgs e)
@@ -177,6 +182,14 @@ namespace SQLServer_Lesson
             }
         }
 
+        private void InsertDataButton_Click(object sender, EventArgs e)
+        {
+            for (int i = 10; i <= 50000; i++)
+            {
+                ProductSQLServer.Insert(new ProductEntity(i, "product:" + i, i * 10));
+            }
 
+            MessageBox.Show("完了しました");
+        }
     }
 }
